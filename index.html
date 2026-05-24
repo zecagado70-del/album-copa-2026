@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Cup Arena 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- =============================================
+         TELA DE LOGIN
+    ============================================== -->
+    <div id="tela-login">
+        <canvas id="canvas-bg"></canvas>
+        <div class="login-wrapper">
+            <div class="glass-panel"></div>
+            <div class="gold-line"></div>
+            <div class="ball-container"><div class="ball">⚽</div></div>
+            <div class="title-main">World Cup</div>
+            <div class="title-sub">Arena &nbsp;·&nbsp; 2026</div>
+            <div class="divider"></div>
+            <div class="flags-row">
+                <div class="flag-badge">🇧🇷</div>
+                <div class="flag-badge">🇦🇷</div>
+                <div class="flag-badge">🇫🇷</div>
+                <div class="flag-badge">🇩🇪</div>
+                <div class="flag-badge">🏆</div>
+            </div>
+            <div class="countdown-row">
+                <div class="countdown-item"><div class="countdown-num" id="cd-d">--</div><div class="countdown-label">Dias</div></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-item"><div class="countdown-num" id="cd-h">--</div><div class="countdown-label">Horas</div></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-item"><div class="countdown-num" id="cd-m">--</div><div class="countdown-label">Min</div></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-item"><div class="countdown-num" id="cd-s">--</div><div class="countdown-label">Seg</div></div>
+            </div>
+            <div class="welcome-text">Colecione suas figurinhas, abra pacotes<br>e dispute palpites com seus amigos.</div>
+            <button id="btn-login" class="btn-google">
+                <div class="google-icon">G</div>
+                Entrar com o Google
+            </button>
+            <div class="login-footer">World Cup Arena 2026 &nbsp;·&nbsp; Álbum Digital Oficial</div>
+        </div>
+    </div>
+
+    <!-- =============================================
+         PAINEL PRINCIPAL (pós-login)
+    ============================================== -->
+    <div id="tela-painel" style="display: none;">
+
+        <header class="cabecalho">
+            <div class="cabecalho-logo">
+                <span class="cabecalho-titulo">WC Arena</span>
+                <span class="cabecalho-sub">2026</span>
+            </div>
+            <h2 id="nome-usuario">Bem-vindo!</h2>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <!-- Streak badge -->
+                <div class="streak-badge" id="streak-badge" style="display:none;">
+                    <span class="streak-icon">🔥</span>
+                    <span id="streak-count">0</span>
+                </div>
+                <div class="status-pacotes">
+                    <span class="pacotes-label">📦</span>
+                    <strong id="qtd-pacotes">0</strong>
+                    <span class="pacotes-label">pacotes</span>
+                </div>
+            </div>
+        </header>
+
+        <nav class="menu-navegacao">
+            <button class="btn-menu ativo" id="menu-pacotes">📦 Pacotes</button>
+            <button class="btn-menu" id="menu-album">📒 Álbum</button>
+            <button class="btn-menu" id="menu-jogos">⚽ Palpites</button>
+            <button class="btn-menu" id="menu-grupos">🌍 Grupos</button>
+            <button class="btn-menu" id="menu-trocas">🔄 Trocas</button>
+            <button class="btn-menu" id="menu-trivia">❓ Perguntas</button>
+            <button class="btn-menu admin-only" id="menu-admin" style="display:none;">⚙️ Admin</button>
+        </nav>
+
+        <main id="area-conteudo" class="area-conteudo">
+
+            <!-- ======== SEÇÃO: ABRIR PACOTES ======== -->
+            <div id="secao-pacotes">
+                <div class="pacotes-area">
+                    <h3 class="secao-titulo">Meus Pacotes</h3>
+                    <p class="secao-sub" id="msg-pacotes">Você tem <strong id="qtd-display">0</strong> pacotes para abrir!</p>
+
+                    <div class="pilha-wrapper" id="pilha-wrapper">
+                        <div class="pilha-container" id="pilha-pacotes"></div>
+                        <div class="pilha-vazia" id="pilha-vazia" style="display:none;">
+                            <div class="vazia-icon">📭</div>
+                            <p>Sem pacotes disponíveis</p>
+                            <span>Continue participando para ganhar mais!</span>
+                        </div>
+                    </div>
+
+                    <div class="btns-pacote-row">
+                        <button id="btn-rasgar" class="btn-abrir-pacote" disabled>
+                            <span class="btn-abrir-icon">✨</span>
+                            Abrir Pacote
+                        </button>
+                        <button id="btn-abrir-todos" class="btn-abrir-todos" disabled>
+                            <span class="btn-abrir-icon">🎊</span>
+                            Abrir Todos
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resultado-pacotinho" class="resultado-area" style="display: none;">
+                    <h3 class="secao-titulo" style="margin-bottom: 8px;">Suas figurinhas!</h3>
+                    <p class="secao-sub" style="margin-bottom: 30px;" id="resultado-subtitulo">Clique numa carta para ver os detalhes</p>
+                    <div class="container-cartas" id="grid-cartas"></div>
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                        <button id="btn-fechar-resultado" class="btn-fechar">Fechar e ver minha pilha</button>
+                        <button id="btn-proximo-pacote" class="btn-fechar" style="display:none;background:rgba(212,175,55,.15);border-color:#d4af37;">Próximo Pacote ▶</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== SEÇÃO: ÁLBUM ======== -->
+            <div id="secao-album" style="display: none;">
+                <h3 class="secao-titulo">Meu Álbum Oficial</h3>
+                <p class="secao-sub">Progresso da sua coleção de 856 figurinhas</p>
+                <div id="grade-album" class="grade-album"></div>
+            </div>
+
+            <!-- ======== SEÇÃO: GRUPOS ======== -->
+            <div id="secao-grupos" style="display: none;">
+                <h3 class="secao-titulo">🌍 Grupos da Copa 2026</h3>
+                <p class="secao-sub">Seleções classificadas por grupo</p>
+                <div id="grade-grupos" class="grade-grupos"></div>
+            </div>
+
+            <!-- ======== SEÇÃO: JOGOS / PALPITES ======== -->
+            <div id="secao-jogos" style="display: none;">
+                <h3 class="secao-titulo">⚽ Jogos & Palpites</h3>
+                <p class="secao-sub" id="palpites-sub">Você tem <strong id="palpites-restantes">2</strong> palpites hoje</p>
+
+                <!-- Filtro de fase -->
+                <div class="filtro-fase">
+                    <button class="btn-fase ativo" data-fase="todos">Todos</button>
+                    <button class="btn-fase" data-fase="Fase de Grupos">Grupos</button>
+                    <button class="btn-fase" data-fase="Oitavas">Oitavas</button>
+                    <button class="btn-fase" data-fase="Quartas">Quartas</button>
+                    <button class="btn-fase" data-fase="Semifinal">Semi</button>
+                    <button class="btn-fase" data-fase="Final">Final</button>
+                </div>
+
+                <div id="sync-status" class="sync-status">
+                    <span id="sync-icon">☁️</span>
+                    <span id="sync-msg">Carregando jogos...</span>
+                    <button id="btn-sync" class="btn-sync-mini" onclick="window.syncJogos && window.syncJogos()">🔄 Atualizar</button>
+                </div>
+
+                <div id="lista-jogos" class="lista-jogos">
+                    <p style="text-align:center;color:rgba(255,255,255,.3);padding:40px">Carregando calendário...</p>
+                </div>
+            </div>
+
+            <!-- ======== SEÇÃO: TROCAS ======== -->
+            <div id="secao-trocas" style="display: none;">
+                <h3 class="secao-titulo">🔄 Trocas</h3>
+                <p class="secao-sub">Troque figurinhas repetidas com outros colecionadores</p>
+
+                <!-- Card: Meu ID para trocas -->
+                <div class="meu-id-card">
+                    <div class="meu-id-icone">🪪</div>
+                    <div class="meu-id-info">
+                        <div class="meu-id-label">Meu ID de Trocas</div>
+                        <div class="meu-id-valor" id="meu-uid-display">Carregando...</div>
+                        <div class="meu-id-dica">Compartilhe este ID com amigos para receber propostas de troca</div>
+                    </div>
+                    <button class="btn-copiar-uid" id="btn-copiar-uid" title="Copiar ID">
+                        <span id="copiar-uid-icon">📋</span>
+                    </button>
+                </div>
+
+                <!-- Barra de limite diário -->
+                <div class="trocas-limite-bar">
+                    <span>Trocas hoje:</span>
+                    <div class="limite-dots" id="trocas-dots">
+                        <span class="dot" id="dot-1"></span>
+                        <span class="dot" id="dot-2"></span>
+                        <span class="dot" id="dot-3"></span>
+                        <span class="dot" id="dot-4"></span>
+                    </div>
+                    <span id="trocas-restantes-label">4/4 restantes</span>
+                </div>
+
+                <div class="trocas-grid">
+                    <!-- Minhas repetidas -->
+                    <div class="troca-coluna">
+                        <h4 class="troca-coluna-titulo">📤 Minhas Repetidas</h4>
+                        <div id="lista-repetidas" class="lista-repetidas">
+                            <p style="color:rgba(255,255,255,.3);font-size:13px;text-align:center;padding:20px">Carregando...</p>
+                        </div>
+                    </div>
+
+                    <!-- Pedidos recebidos -->
+                    <div class="troca-coluna">
+                        <h4 class="troca-coluna-titulo">📥 Pedidos Recebidos</h4>
+                        <div id="lista-pedidos" class="lista-pedidos">
+                            <p style="color:rgba(255,255,255,.3);font-size:13px;text-align:center;padding:20px">Nenhum pedido</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário de oferta de troca -->
+                <div class="troca-form-area" id="troca-form-area" style="display:none;">
+                    <h4 style="color:#d4af37;margin-bottom:12px;">📤 Oferecer Troca</h4>
+                    <div class="troca-oferta-preview">
+                        <span class="troca-oferta-label">Você oferece:</span>
+                        <strong id="troca-oferta-nome" style="color:#fff"></strong>
+                    </div>
+                    <label class="troca-input-label">ID do destinatário</label>
+                    <div class="troca-uid-input-wrap">
+                        <span class="troca-uid-prefix">🪪</span>
+                        <input type="text" id="troca-uid-destino" class="input-troca input-troca-uid" placeholder="Cole o ID do seu amigo aqui">
+                    </div>
+                    <label class="troca-input-label" style="margin-top:14px;">Figurinha que você quer — escolha o país</label>
+                    <select id="troca-pais-select" class="input-troca">
+                        <option value="">— Selecione um país —</option>
+                    </select>
+                    <div id="troca-grid-figurinhas" class="troca-grid-figurinhas" style="display:none;"></div>
+                    <div id="troca-figurinha-selecionada" class="troca-fig-selecionada" style="display:none;">
+                        <span>✅ Selecionada:</span>
+                        <img id="troca-fig-sel-img" src="" alt="">
+                        <span id="troca-fig-sel-nome"></span>
+                        <button class="btn-troca-deselect" onclick="window.deselecTrocaFig && window.deselecTrocaFig()">✕</button>
+                    </div>
+                    <div style="display:flex;gap:10px;margin-top:16px;">
+                        <button id="btn-enviar-troca" class="btn-destaque" style="flex:1">Enviar Proposta 🚀</button>
+                        <button onclick="document.getElementById('troca-form-area').style.display='none';window._trocaFigSel=null;" class="btn-fechar" style="padding:12px 20px">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======== SEÇÃO: TRIVIA ======== -->
+            <div id="secao-trivia" style="display: none;">
+                <h3 class="secao-titulo">❓ Perguntas da Copa</h3>
+                <p class="secao-sub">Responda e ganhe pacotes! Disponível antes de 13/06/2026</p>
+
+                <div class="trivia-status-bar">
+                    <span>Perguntas hoje:</span>
+                    <div class="limite-dots">
+                        <span class="dot" id="trivia-dot-1"></span>
+                        <span class="dot" id="trivia-dot-2"></span>
+                    </div>
+                    <span id="trivia-restantes-label">2/2 restantes</span>
+                </div>
+
+                <div id="trivia-container" class="trivia-container">
+                    <p style="text-align:center;color:rgba(255,255,255,.3);padding:40px">Carregando perguntas...</p>
+                </div>
+            </div>
+
+            <!-- ======== SEÇÃO: ADMIN ======== -->
+            <div id="secao-admin" style="display: none;">
+                <h3 class="secao-titulo">⚙️ Painel Admin</h3>
+                <p class="secao-sub">Controle do sistema — acesso restrito</p>
+
+                <div class="admin-grid">
+                    <!-- Gerenciar Jogos -->
+                    <div class="admin-card">
+                        <h4 class="admin-card-titulo">⚽ Sincronização de Jogos</h4>
+                        <p class="admin-card-sub">Fonte: openfootball/worldcup.json · Última sync: <span id="admin-ultima-sync">—</span></p>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <button class="btn-destaque" onclick="window.adminSyncJogos && window.adminSyncJogos()">🔄 Sync Novos</button>
+                            <button class="btn-destaque" style="background:rgba(240,192,64,.15)" onclick="window.syncJogosForcar && window.syncJogosForcar()">⚡ Forçar Atualizar</button>
+                            <button class="btn-fechar" style="padding:10px 16px" onclick="window.adminListarJogos && window.adminListarJogos()">📋 Ver Todos</button>
+                        </div>
+                        <div id="admin-jogos-lista" style="margin-top:12px;max-height:280px;overflow-y:auto;"></div>
+                    </div>
+
+                    <!-- Multiplicador Final -->
+                    <div class="admin-card">
+                        <h4 class="admin-card-titulo">🏆 Multiplicador — Final</h4>
+                        <p class="admin-card-sub">Multiplicador atual de recompensas na fase final</p>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+                            <select id="admin-mult-select" class="input-troca" style="flex:1">
+                                <option value="1">x1 — Normal</option>
+                                <option value="2">x2 — Dobro</option>
+                                <option value="3">x3 — Triplo</option>
+                            </select>
+                            <button class="btn-destaque" onclick="window.adminSetMultiplicador && window.adminSetMultiplicador()">Salvar</button>
+                        </div>
+                    </div>
+
+                    <!-- Gerenciar Perguntas -->
+                    <div class="admin-card">
+                        <h4 class="admin-card-titulo">❓ Banco de Perguntas</h4>
+                        <p class="admin-card-sub">Adicionar/editar perguntas do banco</p>
+                        <textarea id="admin-trivia-json" class="input-troca" rows="5" placeholder='[{"pergunta":"...","alternativas":["a","b","c","d"],"correta":0}]' style="font-size:11px;font-family:monospace;resize:vertical;"></textarea>
+                        <button class="btn-destaque" style="margin-top:8px;width:100%" onclick="window.adminSalvarTrivia && window.adminSalvarTrivia()">💾 Salvar Perguntas</button>
+                        <div id="admin-trivia-status" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"></div>
+                    </div>
+
+                    <!-- Configurar Fases Eliminatórias -->
+                    <div class="admin-card">
+                        <h4 class="admin-card-titulo">🏆 Quartas · Semifinal · Final</h4>
+                        <p class="admin-card-sub">Configure manualmente os jogos das fases eliminatórias com times reais.</p>
+                        <div id="admin-bracket-lista" style="margin-top:8px;"></div>
+                        <button class="btn-destaque" style="margin-top:10px;width:100%" onclick="window.adminCarregarBracket && window.adminCarregarBracket()">🔄 Carregar Fases Eliminatórias</button>
+                    </div>
+
+                    <!-- Corrigir Resultado -->
+                    <div class="admin-card" data-card="corrigir">
+                        <h4 class="admin-card-titulo">✏️ Editar Jogo</h4>
+                        <p class="admin-card-sub">Corrija ou ajuste qualquer campo de um jogo. Jogos editados manualmente não são sobrescritos pelo sync.</p>
+                        <input type="text" id="admin-jogo-id" class="input-troca" placeholder="ID do jogo (ex: MEX_ARG_20260611)">
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <input type="text" id="admin-mandante-nome" class="input-troca" placeholder="Time mandante" style="flex:1">
+                            <input type="text" id="admin-visitante-nome" class="input-troca" placeholder="Time visitante" style="flex:1">
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <input type="number" id="admin-gols-mandante" class="input-troca" placeholder="Gols casa" style="flex:1">
+                            <input type="number" id="admin-gols-visitante" class="input-troca" placeholder="Gols fora" style="flex:1">
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <input type="text" id="admin-horario" class="input-troca" placeholder="Horário BRT (ex: 16:00)" style="flex:1">
+                            <input type="text" id="admin-fase-nome" class="input-troca" placeholder="Fase (ex: Fase de Grupos · A)" style="flex:1">
+                        </div>
+                        <input type="text" id="admin-sede" class="input-troca" placeholder="Sede / Estádio (opcional)" style="margin-top:8px;">
+                        <select id="admin-status-jogo" class="input-troca" style="margin-top:8px;">
+                            <option value="agendado">Agendado</option>
+                            <option value="em_andamento">Em Andamento</option>
+                            <option value="encerrado">Encerrado</option>
+                        </select>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <button class="btn-destaque" style="flex:1" onclick="window.adminCorrigirJogo && window.adminCorrigirJogo()">💾 Salvar Jogo</button>
+                            <button class="btn-fechar" style="padding:10px 14px" onclick="['admin-jogo-id','admin-mandante-nome','admin-visitante-nome','admin-gols-mandante','admin-gols-visitante','admin-horario','admin-fase-nome','admin-sede'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});showToast&&showToast('Limpo','')">🗑 Limpar</button>
+                        </div>
+                    </div>
+
+                    <!-- Dar Pacotes -->
+                    <div class="admin-card">
+                        <h4 class="admin-card-titulo">🎁 Dar Pacotes a Usuário</h4>
+                        <input type="text" id="admin-uid-alvo" class="input-troca" placeholder="UID do usuário">
+                        <input type="number" id="admin-qtd-pacotes" class="input-troca" placeholder="Quantidade de pacotes" style="margin-top:8px;">
+                        <button class="btn-destaque" style="margin-top:8px;width:100%" onclick="window.adminDarPacotes && window.adminDarPacotes()">Dar Pacotes</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- =============================================
+         MODAL FIGURINHA (zoom/detalhe)
+    ============================================== -->
+    <div id="modal-figurinha" class="modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal-box modal-figurinha-box">
+            <button class="modal-fig-fechar" onclick="document.getElementById('modal-figurinha').style.display='none'">✕</button>
+            <img id="modal-fig-img" src="" alt="" class="modal-fig-img">
+            <div class="modal-fig-nome" id="modal-fig-nome"></div>
+            <div class="modal-fig-info" id="modal-fig-info"></div>
+        </div>
+    </div>
+
+    <!-- =============================================
+         MODAL ADMIN — QUARTAS / SEMI / FINAL
+    ============================================== -->
+    <div id="modal-bracket" class="modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal-box" style="max-width:500px;width:94%;">
+            <h3 style="color:#d4af37;font-family:'Bebas Neue';font-size:22px;margin-bottom:4px" id="bracket-titulo">Configurar Jogo</h3>
+            <p style="color:rgba(255,255,255,.4);font-size:12px;margin-bottom:16px" id="bracket-sub"></p>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+                <input type="text" id="bracket-m" class="input-troca" placeholder="Time mandante" style="flex:1">
+                <span style="color:#d4af37;font-family:'Bebas Neue';font-size:20px">x</span>
+                <input type="text" id="bracket-v" class="input-troca" placeholder="Time visitante" style="flex:1">
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+                <input type="number" id="bracket-gm" class="input-troca" placeholder="Gols casa" style="flex:1">
+                <input type="number" id="bracket-gv" class="input-troca" placeholder="Gols fora" style="flex:1">
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+                <input type="text" id="bracket-horario" class="input-troca" placeholder="Horário BRT" style="flex:1">
+                <select id="bracket-status" class="input-troca" style="flex:1">
+                    <option value="agendado">Agendado</option>
+                    <option value="em_andamento">Em Andamento</option>
+                    <option value="encerrado">Encerrado</option>
+                </select>
+            </div>
+            <input type="hidden" id="bracket-jogo-id">
+            <div style="display:flex;gap:10px;margin-top:4px;">
+                <button class="btn-destaque" style="flex:1" onclick="window.salvarBracketJogo && window.salvarBracketJogo()">💾 Salvar</button>
+                <button class="btn-fechar" style="padding:12px 20px" onclick="document.getElementById('modal-bracket').style.display='none'">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================
+         OVERLAY DE ANIMAÇÃO (rasgar pacote)
+    ============================================== -->
+    <div id="overlay-rasgar" class="overlay-rasgar" style="display:none;">
+        <canvas id="canvas-confetti"></canvas>
+        <div class="pacote-animado-wrapper">
+            <div class="pacote-animado" id="pacote-animado">
+                <div class="pacote-svg-wrap"></div>
+            </div>
+        </div>
+        <p class="overlay-dica" id="overlay-dica">Clique para abrir!</p>
+    </div>
+
+    <!-- =============================================
+         MODAL PALPITE
+    ============================================== -->
+    <div id="modal-palpite" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <div class="modal-titulo" id="palpite-jogo-titulo">Brasil x Argentina</div>
+            <p class="modal-sub" id="palpite-jogo-data">14/06/2026 · 16:00</p>
+            <div class="palpite-opcoes">
+                <button class="btn-palpite" id="palpite-mandante">🏠 Vitória Casa</button>
+                <button class="btn-palpite" id="palpite-empate">🤝 Empate</button>
+                <button class="btn-palpite" id="palpite-visitante">✈️ Vitória Fora</button>
+            </div>
+            <div class="palpite-placar-row">
+                <span style="color:rgba(255,255,255,.5);font-size:13px">Placar exato (bônus extra):</span>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+                    <input type="number" id="placar-mandante" class="input-placar" min="0" max="20" placeholder="0">
+                    <span style="color:#d4af37;font-family:'Bebas Neue';">x</span>
+                    <input type="number" id="placar-visitante" class="input-placar" min="0" max="20" placeholder="0">
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;">
+                <button id="btn-confirmar-palpite" class="btn-destaque" style="flex:1">Confirmar Palpite</button>
+                <button onclick="document.getElementById('modal-palpite').style.display='none'" class="btn-fechar" style="padding:12px 20px">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+
+    <!-- Script NÃO-module: canvas login + countdown -->
+    <script>
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let W, H, stars = [], particles = [];
+        function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 200; i++) stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.5, alpha: Math.random(), speed: Math.random()*0.003+0.001, phase: Math.random()*Math.PI*2 });
+        }
+        function spawnParticle() {
+            if (Math.random() < 0.08) particles.push({ x: Math.random()*W, y: H+10, vx:(Math.random()-0.5)*0.5, vy:-(Math.random()*1.5+0.5), r:Math.random()*2+1, alpha:0.8, color:Math.random()>0.5?'gold':'white' });
+        }
+        function draw(t) {
+            ctx.clearRect(0,0,W,H);
+            const grad = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,H*0.8);
+            grad.addColorStop(0,'#0d1929'); grad.addColorStop(0.5,'#080f1c'); grad.addColorStop(1,'#030710');
+            ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+            const glow = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,300);
+            glow.addColorStop(0,'rgba(212,175,55,0.06)'); glow.addColorStop(1,'transparent');
+            ctx.fillStyle = glow; ctx.fillRect(0,0,W,H);
+            stars.forEach(s => { s.alpha=0.3+0.5*Math.sin(t*s.speed*1000+s.phase); ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${s.alpha})`; ctx.fill(); });
+            spawnParticle();
+            particles = particles.filter(p=>p.alpha>0.02);
+            particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.alpha*=0.985; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.color==='gold'?`rgba(212,175,55,${p.alpha})`:`rgba(255,255,255,${p.alpha*0.4})`; ctx.fill(); });
+            requestAnimationFrame(draw);
+        }
+        function updateCountdown() {
+            const diff = new Date('2026-06-11T16:00:00Z') - new Date();
+            if (diff<=0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00'); return; }
+            document.getElementById('cd-d').textContent = String(Math.floor(diff/86400000)).padStart(2,'0');
+            document.getElementById('cd-h').textContent = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
+            document.getElementById('cd-m').textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+            document.getElementById('cd-s').textContent = String(Math.floor(diff%60000/1000)).padStart(2,'0');
+        }
+        window.addEventListener('resize',()=>{resize();initStars();});
+        resize(); initStars(); requestAnimationFrame(draw); updateCountdown(); setInterval(updateCountdown,1000);
+    </script>
+</body>
+</html>
