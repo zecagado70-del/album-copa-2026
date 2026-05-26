@@ -81,6 +81,8 @@
             <button class="btn-menu" id="menu-trocas">🔄 Trocas</button>
             <button class="btn-menu" id="menu-trivia">❓ Perguntas</button>
             <button class="btn-menu admin-only" id="menu-admin" style="display:none;">⚙️ Admin</button>
+            <button class="btn-menu" id="menu-criadores">👨‍💻 Criadores</button>
+            <button class="btn-menu btn-logout" id="menu-logout">🚪 Sair</button>
         </nav>
 
         <main id="area-conteudo" class="area-conteudo">
@@ -345,6 +347,53 @@
                         <input type="number" id="admin-qtd-pacotes" class="input-troca" placeholder="Quantidade de pacotes" style="margin-top:8px;">
                         <button class="btn-destaque" style="margin-top:8px;width:100%" onclick="window.adminDarPacotes && window.adminDarPacotes()">Dar Pacotes</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- ======== SEÇÃO: CRIADORES ======== -->
+            <div id="secao-criadores" style="display: none;">
+                <h3 class="secao-titulo">👨‍💻 Criadores</h3>
+                <p class="secao-sub">A equipe por trás do World Cup Arena 2026</p>
+                <div class="grade-criadores">
+
+                    <div class="card-criador" onclick="abrirModalCriador('assets/criadores/joaoamaral.png')">
+                        <img src="assets/criadores/joaoamaral.png" alt="João Pedro Amaral" class="card-criador-img">
+                        <div class="card-criador-nome">JOÃO PEDRO AMARAL</div>
+                        <div class="card-criador-apelido">JOW</div>
+                    </div>
+
+                    <div class="card-criador" onclick="abrirModalCriador('assets/criadores/joaocarneiro.png')">
+                        <img src="assets/criadores/joaocarneiro.png" alt="João Pedro Carneiro" class="card-criador-img">
+                        <div class="card-criador-nome">JOÃO PEDRO CARNEIRO</div>
+                        <div class="card-criador-apelido">BRANCO</div>
+                    </div>
+
+                    <div class="card-criador" onclick="abrirModalCriador('assets/criadores/messias.png')">
+                        <img src="assets/criadores/messias.png" alt="Messias Gabriel" class="card-criador-img">
+                        <div class="card-criador-nome">MESSIAS GABRIEL</div>
+                        <div class="card-criador-apelido">FACÃO</div>
+                    </div>
+
+                    <div class="card-criador" onclick="abrirModalCriador('assets/criadores/marieldon.png')">
+                        <img src="assets/criadores/marieldon.png" alt="Marieldon Santos" class="card-criador-img">
+                        <div class="card-criador-nome">MARIELDON SANTOS</div>
+                        <div class="card-criador-apelido">SEM APELIDO</div>
+                    </div>
+
+                    <div class="card-criador" onclick="abrirModalCriador('assets/criadores/guilherme.png')">
+                        <img src="assets/criadores/guilherme.png" alt="Guilherme Silva" class="card-criador-img">
+                        <div class="card-criador-nome">GUILHERME SILVA</div>
+                        <div class="card-criador-apelido">GUISIL</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ======== MODAL CRIADOR (zoom) ======== -->
+            <div id="modal-criador" class="modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+                <div class="modal-criador-box">
+                    <button class="modal-fig-fechar" onclick="document.getElementById('modal-criador').style.display='none'">✕</button>
+                    <img id="modal-criador-img" src="" alt="" class="modal-criador-img">
                 </div>
             </div>
 

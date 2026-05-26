@@ -65,7 +65,7 @@ body { background:#060c18; color:white; font-family:'Inter','Segoe UI',sans-seri
 /* ================================================
    AREA CONTEÚDO
 ================================================ */
-.area-conteudo { padding:30px 20px 60px; max-width:900px; margin:0 auto; }
+.area-conteudo { padding:30px 20px 60px; max-width:900px; width:100%; margin:0 auto; }
 .secao-titulo { font-family:'Bebas Neue',sans-serif; font-size:32px; color:#d4af37; letter-spacing:2px; text-align:center; margin-bottom:4px; }
 .secao-sub { font-size:14px; color:rgba(255,255,255,.45); text-align:center; margin-bottom:32px; }
 
@@ -829,4 +829,94 @@ body { background:#060c18; color:white; font-family:'Inter','Segoe UI',sans-seri
     color: rgba(212,175,55,.8);
     letter-spacing: 2px;
     white-space: nowrap;
+}
+
+/* ================================================
+   CRIADORES
+================================================ */
+.grade-criadores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 16px 0 40px;
+}
+
+.card-criador {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    width: 160px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.card-criador:hover {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212,175,55,.2);
+    border-color: rgba(212,175,55,.5);
+}
+
+.card-criador:active {
+    transform: scale(0.97);
+}
+
+.card-criador-img {
+    width: 100%;
+    display: block;
+}
+
+.card-criador-nome {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    color: #fff;
+    padding: 7px 8px 1px;
+    letter-spacing: 0.04em;
+}
+
+.card-criador-apelido {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.45);
+    padding-bottom: 8px;
+    letter-spacing: 0.08em;
+}
+
+/* Modal zoom criador */
+.modal-criador-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-criador-img {
+    max-height: 85vh;
+    max-width: 90vw;
+    width: auto;
+    border-radius: 20px;
+    border: 2px solid rgba(212,175,55,.4);
+    box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(212,175,55,.15);
+    animation: criadorZoomIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes criadorZoomIn {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* ================================================
+   BOTÃO LOGOUT
+================================================ */
+.btn-logout {
+    color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.3) !important;
+    margin-left: auto;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 107, 107, 0.15) !important;
+    color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.6) !important;
 }

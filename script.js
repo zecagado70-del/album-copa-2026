@@ -747,25 +747,28 @@ if (btnFechar) {
 // ============================================================
 // 15. SISTEMA DE ABAS
 // ============================================================
-const menuPacotes = document.getElementById('menu-pacotes');
-const menuAlbum   = document.getElementById('menu-album');
-const menuJogos   = document.getElementById('menu-jogos');
-const menuGrupos  = document.getElementById('menu-grupos');
-const menuTrocas  = document.getElementById('menu-trocas');
-const menuTrivia  = document.getElementById('menu-trivia');
-const menuAdmin   = document.getElementById('menu-admin');
+const menuPacotes   = document.getElementById('menu-pacotes');
+const menuAlbum     = document.getElementById('menu-album');
+const menuJogos     = document.getElementById('menu-jogos');
+const menuGrupos    = document.getElementById('menu-grupos');
+const menuTrocas    = document.getElementById('menu-trocas');
+const menuTrivia    = document.getElementById('menu-trivia');
+const menuAdmin     = document.getElementById('menu-admin');
+const menuCriadores = document.getElementById('menu-criadores');
+const menuLogout    = document.getElementById('menu-logout');
 
-const secaoPacotes = document.getElementById('secao-pacotes');
-const secaoAlbum   = document.getElementById('secao-album');
-const secaoJogos   = document.getElementById('secao-jogos');
-const secaoGrupos  = document.getElementById('secao-grupos');
-const secaoTrocas  = document.getElementById('secao-trocas');
-const secaoTrivia  = document.getElementById('secao-trivia');
-const secaoAdmin   = document.getElementById('secao-admin');
-const gradeAlbum   = document.getElementById('grade-album');
+const secaoPacotes   = document.getElementById('secao-pacotes');
+const secaoAlbum     = document.getElementById('secao-album');
+const secaoJogos     = document.getElementById('secao-jogos');
+const secaoGrupos    = document.getElementById('secao-grupos');
+const secaoTrocas    = document.getElementById('secao-trocas');
+const secaoTrivia    = document.getElementById('secao-trivia');
+const secaoAdmin     = document.getElementById('secao-admin');
+const secaoCriadores = document.getElementById('secao-criadores');
+const gradeAlbum     = document.getElementById('grade-album');
 
-const todasSecoes = [secaoPacotes, secaoAlbum, secaoJogos, secaoGrupos, secaoTrocas, secaoTrivia, secaoAdmin];
-const todosMenus  = [menuPacotes, menuAlbum, menuJogos, menuGrupos, menuTrocas, menuTrivia, menuAdmin];
+const todasSecoes = [secaoPacotes, secaoAlbum, secaoJogos, secaoGrupos, secaoTrocas, secaoTrivia, secaoAdmin, secaoCriadores];
+const todosMenus  = [menuPacotes, menuAlbum, menuJogos, menuGrupos, menuTrocas, menuTrivia, menuAdmin, menuCriadores, menuLogout];
 
 function setAba(btnAtivo, secAtiva, callback) {
     todosMenus.forEach(b => b && b.classList.remove('ativo'));
@@ -775,13 +778,27 @@ function setAba(btnAtivo, secAtiva, callback) {
     if (callback) callback();
 }
 
-menuPacotes?.addEventListener('click', () => setAba(menuPacotes, secaoPacotes));
-menuAlbum?.addEventListener('click',   () => setAba(menuAlbum, secaoAlbum, renderizarAlbum));
-menuJogos?.addEventListener('click',   () => setAba(menuJogos, secaoJogos, carregarJogos));
-menuGrupos?.addEventListener('click',  () => setAba(menuGrupos, secaoGrupos, renderizarGrupos));
-menuTrocas?.addEventListener('click',  () => setAba(menuTrocas, secaoTrocas, carregarTrocas));
-menuTrivia?.addEventListener('click',  () => setAba(menuTrivia, secaoTrivia, carregarTrivia));
-menuAdmin?.addEventListener('click',   () => setAba(menuAdmin, secaoAdmin, carregarAdmin));
+menuPacotes?.addEventListener('click',   () => setAba(menuPacotes, secaoPacotes));
+menuAlbum?.addEventListener('click',     () => setAba(menuAlbum, secaoAlbum, renderizarAlbum));
+menuJogos?.addEventListener('click',     () => setAba(menuJogos, secaoJogos, carregarJogos));
+menuGrupos?.addEventListener('click',    () => setAba(menuGrupos, secaoGrupos, renderizarGrupos));
+menuTrocas?.addEventListener('click',    () => setAba(menuTrocas, secaoTrocas, carregarTrocas));
+menuTrivia?.addEventListener('click',    () => setAba(menuTrivia, secaoTrivia, carregarTrivia));
+menuAdmin?.addEventListener('click',     () => setAba(menuAdmin, secaoAdmin, carregarAdmin));
+menuCriadores?.addEventListener('click', () => setAba(menuCriadores, secaoCriadores));
+menuLogout?.addEventListener('click', async () => {
+    await auth.signOut();
+    document.getElementById('tela-painel').style.display = 'none';
+    document.getElementById('tela-login').style.display  = 'flex';
+});
+
+// Zoom nos cards de criadores
+window.abrirModalCriador = function(src) {
+    const modal = document.getElementById('modal-criador');
+    const img   = document.getElementById('modal-criador-img');
+    img.src = src;
+    modal.style.display = 'flex';
+};
 
 // ============================================================
 // 16. ÁLBUM — Navegação por Seleções
